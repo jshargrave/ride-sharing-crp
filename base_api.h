@@ -1,5 +1,7 @@
 #include <curl/curl.h>
 #include <string>
+#include <list>
+#include "incident.h"
 
 using namespace std;
 
@@ -14,7 +16,9 @@ class BaseAPI {
 		string updates;
 
 	public:
-		virtual string retrieve_incidents() {return "Need to redefine virtual function get_update() in derived class.";}
+		virtual string retrieve_incidents() = 0;
+		virtual list<Incident*> pack_incidents() = 0;
+	
 
 		string get_key()const {return api_key;}
 		string get_updates()const {return updates;}
