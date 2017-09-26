@@ -24,16 +24,15 @@ int main(int argc, char * argv[])
 
     
 
-    PullUpdates* P = new PullUpdates();
+    PullUpdates P = PullUpdates();
     TomTomAPI* T = new TomTomAPI(config_values.at("TomTomAPI"));
-    //T = NULL;
 
-    P->load_api(T);
-    P->pull_updates();
-    P->print_updates();
-    
 
-    
+    P.load_api(T);
+    T = NULL;
+
+    //should return a vect(list(incident))
+    P.pull_updates();
 
     return 0;
 }

@@ -1,5 +1,6 @@
 using namespace std;
 
+
 string BaseAPI::http_get(string url){
 	CURL *curl;
 	string readBuffer;

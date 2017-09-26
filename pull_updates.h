@@ -9,13 +9,17 @@ using namespace std;
 class PullUpdates {
 	private:
 		list<BaseAPI*> api_list;
-		list<string> updates_list;
 
 
 	public:
+		PullUpdates(){};
+		
+		~PullUpdates();
+
+
 		void load_api(BaseAPI* obj);
 
-		list<string> pull_updates();
+		list<list<Incident*> > pull_updates();
 
 		void print_updates();
 

@@ -9,8 +9,11 @@ string TomTomAPI::retrieve_incidents()
 	return http_get(url);
 }
 
-list<Incident*> TomTomAPI::pack_incidents(){
+list<Incident*> TomTomAPI::parse_incidents(string incidents){
 	list<Incident*> inc_list;
+	//cout<<incidents<<endl;
+	//json_error_t error;
+	//json_t *root = json_loads(incidents, 0, &error);
 
 	return inc_list;
 }
