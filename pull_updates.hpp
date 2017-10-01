@@ -13,14 +13,12 @@ void PullUpdates::load_api(BaseAPI* obj)
 	api_list.push_back(obj);
 }
 
-list<list<Incident*> > PullUpdates::pull_updates()
+list<list<Incident> > PullUpdates::pull_updates(list<list<Incident> > &all_inc)
 {
-	string inc_str;
-	list<Incident*> inc_list;
-	list<list<Incident*> > all_inc;
+	string inc_str; //holds a sting representation of the incidents from each API
+	list<Incident> inc_list;
 
-
-	for(list<BaseAPI*>::iterator it = api_list.begin(); it != api_list.end(); it++){
+	for(auto it = api_list.begin(); it != api_list.end(); it++){
 		inc_str = (*it)->retrieve_incidents();
 		inc_list = (*it)->parse_incidents(inc_str);
 		all_inc.push_back(inc_list);

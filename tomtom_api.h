@@ -16,7 +16,7 @@ class TomTomAPI : public BaseAPI {
 		TomTomAPI(string key) {api_key = key;}
 
 		string retrieve_incidents();
-		list<Incident*> parse_incidents(string incidents);
+		list<Incident> parse_incidents(string incidents);
 
 
 

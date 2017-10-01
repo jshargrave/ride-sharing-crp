@@ -1,4 +1,5 @@
 using namespace std;
+using json = nlohmann::json;
 
 string TomTomAPI::retrieve_incidents()
 {
@@ -9,11 +10,59 @@ string TomTomAPI::retrieve_incidents()
 	return http_get(url);
 }
 
-list<Incident*> TomTomAPI::parse_incidents(string incidents){
-	list<Incident*> inc_list;
-	//cout<<incidents<<endl;
-	//json_error_t error;
-	//json_t *root = json_loads(incidents, 0, &error);
+list<Incident> TomTomAPI::parse_incidents(string incidents){
+	list<Incident> inc_list;
+	json j = json::parse(incidents)["tm"]["poi"];
+
+	//Variables used to extract from the API response
+	string id, f, t, r;
+	float x, y;
+	int ic, ty, l, dl;
+
+
+	for(auto it = j.begin(); it != j.end(); it++)
+	{
+
+		id = it.value()["id"];
+		x = it.value()["p"]["x"];
+		y = it.value()["p"]["y"];
+		ic = it.value()["ic"];
+		ty = it.value()["ty"];
+		l = it.value()["l"];
+		
+		//tags that may or may not be present
+		try
+		{
+			f = it.value()["f"];
+			t = it.value()["t"];
+		}
+		catch (nlohmann::detail::type_error e)
+		{
+			f = "";
+			t = "";
+		}
+
+		try
+		{
+			dl = it.value()["dl"];
+		}
+		catch (nlohmann::detail::type_error e)
+		{
+			dl = -1;
+		}
+
+		try
+		{
+			r = it.value()["r"];
+		}
+		catch (nlohmann::detail::type_error e)
+		{
+			r = "";
+		}
+
+		Incident inc = Incident(id, f, t, r, x, y, ic, ty, l, dl);
+		inc_list.push_back(inc);
+	}
 
 	return inc_list;
 }

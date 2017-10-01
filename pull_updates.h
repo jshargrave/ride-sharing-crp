@@ -19,7 +19,7 @@ class PullUpdates {
 
 		void load_api(BaseAPI* obj);
 
-		list<list<Incident*> > pull_updates();
+		list<list<Incident> > pull_updates(list<list<Incident> > &all_inc);
 
 		void print_updates();
 

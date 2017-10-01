@@ -1,5 +1,5 @@
 #include <curl/curl.h>
-#include <jansson.h>
+
 #include <string>
 #include <list>
 #include "incident.h"
@@ -18,7 +18,7 @@ class BaseAPI {
 
 	public:
 		virtual string retrieve_incidents() = 0;
-		virtual list<Incident*> parse_incidents(string incidents) = 0;
+		virtual list<Incident> parse_incidents(string incidents) = 0;
 		virtual ~BaseAPI(){};
 	
 
@@ -33,4 +33,5 @@ class BaseAPI {
 }; //BaseAPI
 
 #include "base_api.hpp"
+#include "json.hpp"
 #endif // BASE_API_H
