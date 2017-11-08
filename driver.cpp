@@ -1,6 +1,7 @@
 #include "tomtom_api.h"
 #include "pull_updates.h"
 #include "config_parser.h"
+#include "incident_storage.h"
 
 #include <iostream>
 #include <string>
@@ -22,7 +23,7 @@ int main(int argc, char * argv[])
     // First initalization of curl, only needs to be done once
     curl_global_init(CURL_GLOBAL_ALL);
 
-    
+
 
     PullUpdates P = PullUpdates();
     TomTomAPI* T = new TomTomAPI(config_values.at("TomTomAPI"));
@@ -34,6 +35,9 @@ int main(int argc, char * argv[])
     list<list<Incident> > all_inc;
     P.pull_updates(all_inc);
 
+    IncidentStorage IS = IncidentStorage();
+
+    /*
     cout<<"Printing Updates..."<<endl;
 
     for(auto it = all_inc.begin(); it != all_inc.end(); it++)
@@ -43,6 +47,9 @@ int main(int argc, char * argv[])
     		cout<<(it2)->get_id()<<endl;
     	}
     }
+    */
+
+
 
     return 0;
 }
