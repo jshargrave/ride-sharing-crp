@@ -37,7 +37,7 @@ int main(int argc, char * argv[])
 
     IncidentStorage IS = IncidentStorage();
 
-    /*
+
     cout<<"Printing Updates..."<<endl;
 
     for(auto it = all_inc.begin(); it != all_inc.end(); it++)
@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
     		cout<<(it2)->get_id()<<endl;
     	}
     }
-    */
+    
 
 
 

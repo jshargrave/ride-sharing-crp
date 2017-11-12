@@ -12,7 +12,16 @@ string TomTomAPI::retrieve_incidents()
 
 list<Incident> TomTomAPI::parse_incidents(string incidents){
 	list<Incident> inc_list;
-	json j = json::parse(incidents)["tm"]["poi"];
+
+	json j;
+	try{
+		j = json::parse(incidents)["tm"]["poi"];
+	}
+	// Error when loading incidents string into json
+	catch(nlohmann::detail::parse_error e)
+	{
+		cout<<"Error: could not parse incidents into json."<<endl;
+	}
 
 	//Variables used to extract from the API response
 	string id, f, t, r;
@@ -29,7 +38,7 @@ list<Incident> TomTomAPI::parse_incidents(string incidents){
 		ic = it.value()["ic"];
 		ty = it.value()["ty"];
 		l = it.value()["l"];
-		
+
 		//tags that may or may not be present
 		try
 		{
