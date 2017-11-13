@@ -2,3 +2,5 @@
 
 Dependencies:
 	Curl
+	sqlite
+	
