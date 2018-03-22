@@ -1,0 +1,8 @@
+.gitignore~
+
+# Ignore all of cmake files
+cmake/*
+
+# Get two cmake files
+!cmake/FindLibOSRM.cmake
+!cmake/FindTBB.cmake
