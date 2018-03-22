@@ -26,18 +26,11 @@ if(WIN32 AND MSVC_VERSION LESS 1900)
   message(FATAL_ERROR "Building with Microsoft compiler needs Latest Visual Studio 2015 (Community or better)")
 endif()
 
-link_directories(${LibOSRM_LIBRARY_DIRS})
+link_directories(${LibOSRM_LIBRARY_DIRS} ${CURL_INCLUDE_DIRS})
 add_executable(Ride-Sharing driver.cpp)
 
 find_package(LibOSRM REQUIRED)
 
-target_link_libraries(Ride-Sharing ${LibOSRM_LIBRARIES} ${LibOSRM_DEPENDENT_LIBRARIES})
+target_link_libraries(Ride-Sharing ${LibOSRM_LIBRARIES} ${LibOSRM_DEPENDENT_LIBRARIES} -lcurl)
 include_directories(SYSTEM ${LibOSRM_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LibOSRM_CXXFLAGS}")
-
-
-set(CURL_LIBRARY "-lcurl") 
-find_package(CURL REQUIRED) 
-add_executable (curl-demo convert.cpp)
-include_directories(${CURL_INCLUDE_DIR})
-target_link_libraries(curl-demo ${CURL_LIBRARIES})

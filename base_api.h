@@ -20,7 +20,7 @@ class BaseAPI {
 		virtual string retrieve_incidents() = 0;
 		virtual list<Incident> parse_incidents(string incidents) = 0;
 		virtual ~BaseAPI(){};
-	
+
 
 		string get_key()const {return api_key;}
 
