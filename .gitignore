@@ -1,8 +1,20 @@
-.gitignore~
-
-# Ignore all of cmake files
+# Ignore all files in cmake directory
 cmake/*
-
-# Get two cmake files
+# Except!
 !cmake/FindLibOSRM.cmake
 !cmake/FindTBB.cmake
+
+# Ignore all files in data directory
+data/*
+# Except
+
+# Ignore all files in test directory
+UnitTest/*
+# Except
+!UnitTest/CMakeLists.txt
+!UnitTest/test/
+
+# Ignore files in main directory
+.gitignore~
+config.txt
+depend
