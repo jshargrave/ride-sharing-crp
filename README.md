@@ -11,7 +11,7 @@ Changes that need to be made:
 Dependencies:
 1) OSRM
 2) Curl
-3) Boost
+3) Boost 1.59
 
 How to build:
 1) Build OSRM from source, see documentation site.
@@ -43,4 +43,3 @@ Included in the UnitTest folder are a number of tests that can be used to debug 
 4) cmake ..
 5) make
 6) make test
-

@@ -58,6 +58,7 @@ int main(int argc, char * argv[])
     P.pull_updates(all_inc);
 
     IncidentStorage IS = IncidentStorage();
+    IS.StoreIncidents(all_inc);
 
 
     /*
@@ -70,6 +71,7 @@ int main(int argc, char * argv[])
     	}
     }
     */
+
 
 
 

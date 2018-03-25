@@ -10,12 +10,14 @@ using namespace std;
 class Incident {
 	private:
 		string id, f, t, r;
-		float x, y;
+		double x, y;
 		int ic, ty, l, dl;
 
 	public:
-		Incident(string id, string f, string t, string r, float x, float y, int ic, int ty, int l, int dl): id(id), f(f), t(t), r(r), x(x), y(y), ic(ic), ty(ty), l(l), dl(dl) {}
-		
+		Incident(string id, string f, string t, string r, float x, float y, int ic,
+						 int ty, int l, int dl): id(id), f(f), t(t), r(r), x(x), y(y),
+						 ic(ic), ty(ty), l(l), dl(dl) {}
+
 		string get_id(){return id;}
 
 }; // Incident
