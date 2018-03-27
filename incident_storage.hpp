@@ -27,7 +27,7 @@ void IncidentStorage::StoreAIncident(Incident& inc){
     input >> j;
     input.close();
   }
-  j["test"] = 2;
+  j[inc.GetID()] = ParseIncident(inc);
 
   //
   ofstream output(INCIDENTS);
@@ -53,13 +53,28 @@ void IncidentStorage::StoreAUnactiveIncident(string id){
 bool IncidentStorage::DoesFileExist(string file_path){
   ifstream input_file(file_path);
   if(input_file.is_open()){
+    input_file.close();
     return true;
   }
   else{
+    input_file.close();
     return false;
   }
 }
 
-void IncidentStorage::CreateFile(string file_path){
+json IncidentStorage::ParseIncident(Incident& inc){
+  json j;
 
+  j["id"] = inc.GetID();
+  j["f"] = inc.GetF();
+  j["t"] = inc.GetT();
+  j["r"] = inc.GetR();
+  j["x"] = inc.GetX();
+  j["y"] = inc.GetY();
+  j["ic"] = inc.GetIC();
+  j["ty"] = inc.GetTY();
+  j["l"] = inc.GetL();
+  j["dl"] = inc.GetDL();
+
+  return j;
 }

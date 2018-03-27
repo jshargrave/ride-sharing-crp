@@ -64,7 +64,7 @@ class IncidentStorage
 		/*
 
 		*/
-		void CreateFile(string file_path);
+		json ParseIncident(Incident& inc);
 
 
 }; // IncidentStorage
