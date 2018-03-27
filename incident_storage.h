@@ -3,6 +3,7 @@
 */
 
 #include "json.hpp"
+#include "exceptions.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -18,8 +19,6 @@ const string UNACTIVE_INCIDENTS = PATH+"unactive_incidents.json";
 
 class IncidentStorage
 {
-	private:
-
 	public:
 		/*
 			Desc: IncidentStorage constructor.
@@ -37,25 +36,16 @@ class IncidentStorage
 		void StoreAIncident(Incident& inc);
 
 		/*
-			Desc: Takes the id passed and makes the incident matching that id in the INCIDENTS file active by adding it to the ACTIVE_INCIDENTS file.
-		*/
-		void MakeActive(string id);
-
-		/*
 
 		*/
 		void StoreAActiveIncident(string id);
-
-		/*
-			Desc: Takes the id passed and makes the incident matching that id in the ACTIVE_INCIDENTS file unactive by removing it from the ACTIVE_INCIDENTS file and adding it to the UNACTIVE_INCIDENTS.
-		*/
-		void MakeUnactive(string id);
 
 		/*
 
 		*/
 		void StoreAUnactiveIncident(string id);
 
+	private:
 		/*
 
 		*/

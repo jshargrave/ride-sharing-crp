@@ -29,21 +29,40 @@ void IncidentStorage::StoreAIncident(Incident& inc){
   }
   j[inc.GetID()] = ParseIncident(inc);
 
-  //
+  // Writing to file
   ofstream output(INCIDENTS);
   output << setw(4) << j << endl;
 }
 
-void IncidentStorage::MakeActive(string id){
-
-}
-
 void IncidentStorage::StoreAActiveIncident(string id){
+  json j_inc;
+  // Check if ACTIVE_INCIDENTS file exist
+  if(DoesFileExist(INCIDENTS)){
+    // File does exist
+    // Parse all information into a json object
+    ifstream input(INCIDENTS);
+    input >> j_inc;
+    input.close();
+  }
 
-}
+  // If the incident id cannot be found
+  if(j_inc.find(id) == j_inc.end()){
+    throw IncIDDoesNotExist("Incident id: "+id+" does not exist");
+  }
 
-void IncidentStorage::MakeUnactive(string id){
+  json j_active;
+  if(DoesFileExist(ACTIVE_INCIDENTS)){
+    // File Does DoesFileExist
+    // Parse all information into a json object
+    ifstream input(ACTIVE_INCIDENTS);
+    input >> j_active;
+    input.close();
+  }
+  j_active[id] = true;
 
+  // Writing to file
+  ofstream output(ACTIVE_INCIDENTS);
+  output << setw(4) << j_active << endl;
 }
 
 void IncidentStorage::StoreAUnactiveIncident(string id){
