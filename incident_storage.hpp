@@ -18,55 +18,86 @@ void IncidentStorage::StoreIncidents(list<list<Incident> >& all_inc){
 }
 
 void IncidentStorage::StoreAIncident(Incident& inc){
-  json j;
-  // Check if INCIDENTS file exist
-  if(DoesFileExist(INCIDENTS)){
-    // File does exist
-    // Parse all information into a json object
-    ifstream input(INCIDENTS);
-    input >> j;
-    input.close();
-  }
+  // Getting json data
+  json j = GetJsonFile(INCIDENTS);
+
+  // Writing incident data to json
   j[inc.GetID()] = ParseIncident(inc);
 
-  // Writing to file
-  ofstream output(INCIDENTS);
-  output << setw(4) << j << endl;
+  // Writing json to file
+  WriteJsonToFile(INCIDENTS, j);
 }
 
 void IncidentStorage::StoreAActiveIncident(string id){
-  json j_inc;
-  // Check if ACTIVE_INCIDENTS file exist
-  if(DoesFileExist(INCIDENTS)){
-    // File does exist
-    // Parse all information into a json object
-    ifstream input(INCIDENTS);
-    input >> j_inc;
-    input.close();
-  }
-
-  // If the incident id cannot be found
-  if(j_inc.find(id) == j_inc.end()){
+  // If the incident id cannot be found in INCIDENTS file, throw exception
+  if(!DoesIDExistInFile(id, INCIDENTS))
+  {
     throw IncIDDoesNotExist("Incident id: "+id+" does not exist");
   }
 
-  json j_active;
-  if(DoesFileExist(ACTIVE_INCIDENTS)){
-    // File Does DoesFileExist
-    // Parse all information into a json object
-    ifstream input(ACTIVE_INCIDENTS);
-    input >> j_active;
-    input.close();
-  }
-  j_active[id] = true;
-
-  // Writing to file
-  ofstream output(ACTIVE_INCIDENTS);
-  output << setw(4) << j_active << endl;
+  // Get ACTIVE_INCIDENTS json and erase incident with id
+  json j = GetJsonFile(ACTIVE_INCIDENTS);
+  j[id] = true;
+  WriteJsonToFile(ACTIVE_INCIDENTS, j);
 }
 
-void IncidentStorage::StoreAUnactiveIncident(string id){
+void IncidentStorage::StoreAInactiveIncident(string id){
+  // If the incident id cannot be found in INCIDENTS or ACTIVE_INCIDENTS file,
+  // throw exception
+  if(!DoesIDExistInFile(id, INCIDENTS) ||
+     !DoesIDExistInFile(id, ACTIVE_INCIDENTS))
+  {
+    throw IncIDDoesNotExist("Incident id: "+id+" does not exist");
+  }
 
+  // Get INCIDENTS json and erase incident with id
+  json j = GetJsonFile(INCIDENTS);
+  j.erase(id);
+  WriteJsonToFile(INCIDENTS, j);
+
+  // Get ACTIVE_INCIDENTS json and erase incident id
+  j = GetJsonFile(ACTIVE_INCIDENTS);
+  j.erase(id);
+  WriteJsonToFile(ACTIVE_INCIDENTS, j);
+
+  // Get INACTIVE_INCIDENTS json and add id
+  j = GetJsonFile(INACTIVE_INCIDENTS);
+  j[id] = true;
+  WriteJsonToFile(INACTIVE_INCIDENTS, j);
+}
+
+bool IncidentStorage::DoesIDExistInFile(string id, string file)
+{
+  json j = GetJsonFile(file);
+  if(j.find(id) == j.end())
+  {
+    cout<<id<<": "<<file<<" false"<<endl;
+    return false;
+  }
+  return true;
+}
+
+json IncidentStorage::GetJsonFile(string file)
+{
+  json j;
+  // If no file, then retuen json {}
+  if(DoesFileExist(file))
+  {
+    // File does exist
+    // Parse all information into a json object
+    ifstream input(file);
+    input >> j;
+    input.close();
+  }
+  return j;
+}
+
+void IncidentStorage::WriteJsonToFile(string file, json j)
+{
+  // Writing to file
+  ofstream output(file);
+  output << setw(4) << j << endl;
+  output.close();
 }
 
 bool IncidentStorage::DoesFileExist(string file_path){

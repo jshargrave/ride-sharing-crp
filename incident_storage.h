@@ -15,7 +15,7 @@ using namespace std;
 const string PATH = 							"../data/";
 const string INCIDENTS = 					PATH+"incidents.json";
 const string ACTIVE_INCIDENTS = 	PATH+"active_incidents.json";
-const string UNACTIVE_INCIDENTS = PATH+"unactive_incidents.json";
+const string INACTIVE_INCIDENTS = PATH+"inactive_incidents.json";
 
 class IncidentStorage
 {
@@ -31,31 +31,56 @@ class IncidentStorage
 		void StoreIncidents(list<list<Incident> >& all_inc);
 
 		/*
-			Desc: This function takes one single incident as a paramater and adds it to the INCIDENTS file for storage.
+			Desc: This function takes one single incident as a paramater and adds it
+						to the INCIDENTS file for storage.
 		*/
 		void StoreAIncident(Incident& inc);
 
 		/*
-
+			Desc: This function takes a incident id, checks that it exist in the
+						INCIDENTS file, then stores it in the ACTIVE_INCIDENTS file.
 		*/
 		void StoreAActiveIncident(string id);
 
 		/*
-
+			Desc: This function takes a incident id, checks if it exist in the
+						INCIDENTS and ACTIVE_INCIDENTS files, then erases the incident id
+						and attributes from both file, then stores the id in the
+						INACTIVE_INCIDENTS file.
 		*/
-		void StoreAUnactiveIncident(string id);
+		void StoreAInactiveIncident(string id);
 
 	private:
-		/*
 
+		/*
+			Desc: This function takes a id and a file as paramater, then it sees if
+						the id exist in the file.  If yes then true is returned, otherwise
+						false is returned.
+		*/
+		bool DoesIDExistInFile(string id, string file);
+
+		/*
+			Desc: Function takes a file path as a string, then it reads the contents
+						into a json object and returns it.
+		*/
+		json GetJsonFile(string file);
+
+		/*
+			Desc: Takes a file path and a json object as a paramater.  Write the json
+						object to the file.
+		*/
+		void WriteJsonToFile(string file, json j);
+
+		/*
+			Desc: Checks to see if the file passed as a paramater exist.
 		*/
 		bool DoesFileExist(string file_path);
 
 		/*
-
+			Desc: Parses an incident into a json object, then returns the json object.
 		*/
-		json ParseIncident(Incident& inc);
 
+		json ParseIncident(Incident& inc);
 
 }; // IncidentStorage
 
