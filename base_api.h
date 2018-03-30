@@ -32,6 +32,6 @@ class BaseAPI {
 
 }; //BaseAPI
 
-#include "base_api.hpp"
 #include "json.hpp"
+#include "base_api.hpp"
 #endif // BASE_API_H

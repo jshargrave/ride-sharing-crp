@@ -1,5 +1,4 @@
 using namespace std;
-using json = nlohmann::json;
 
 string TomTomAPI::retrieve_incidents()
 {

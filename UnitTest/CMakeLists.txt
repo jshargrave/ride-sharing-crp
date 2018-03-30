@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.8.8)
 
+SET(FLAGS    "-std=c++11")
+
+add_definitions(${FLAGS})
+
 #Setup CMake to run tests
 enable_testing()
 
@@ -22,12 +26,12 @@ foreach(testSrc ${TEST_SRCS})
         target_link_libraries(${testName} ${Boost_LIBRARIES}) #[YOUR TARGETS/LIBRARIES])
 
         #I like to move testing binaries into a testBin directory
-        set_target_properties(${testName} PROPERTIES 
+        set_target_properties(${testName} PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/testBin)
 
-        #Finally add it to test execution - 
+        #Finally add it to test execution -
         #Notice the WORKING_DIRECTORY and COMMAND
-        add_test(NAME ${testName} 
-                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/testBin 
+        add_test(NAME ${testName}
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/testBin
                  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/testBin/${testName} )
 endforeach(testSrc)

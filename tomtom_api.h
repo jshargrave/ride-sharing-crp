@@ -2,6 +2,7 @@
 #include <iostream>
 
 using namespace std;
+using json = nlohmann::json;
 
 #ifndef TOMTOM_API_H
 #define TOMTOM_API_H
