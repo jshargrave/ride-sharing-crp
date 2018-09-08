@@ -13,14 +13,29 @@ class TomTomAPI : public BaseAPI {
 
 
 	public:
-		TomTomAPI(string key) {api_key = key;}
+		/*
+		Desc: TomTomAPI constructor.
+		*/
+		TomTomAPI(string key);
 
+		/*
+		Desc: TomTomAPI deconstructor.
+		*/
+		~TomTomAPI();
+
+		/*
+		Desc: Function to parse TOM_TOM_URL and then make API call and return
+			  response.
+		*/
 		string retrieve_incidents();
+
+		/*
+		Desc: Takes the API response string as a paramater and returns a list
+			  of incidents.
+		*/
 		list<Incident> parse_incidents(string incidents);
-
-
 
 }; //TomTomAPI
 
-#include "tomtom_api.hpp"
+#include "tomtom_api.cpp"
 #endif // TOMTOM_API_H

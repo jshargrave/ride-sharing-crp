@@ -1,8 +1,18 @@
 using namespace std;
-#include <iostream>
 
-PullUpdates::~PullUpdates(){
-	while(!api_list.empty()){ 
+PullUpdates::PullUpdates()
+{
+
+}
+
+PullUpdates::~PullUpdates()
+{
+	clear();
+}
+
+void PullUpdates::clear()
+{
+	while(!api_list.empty()){
 		delete api_list.front();
 		api_list.pop_front();
 	}

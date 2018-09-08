@@ -5,6 +5,9 @@
 
 using namespace std;
 
+/*
+Desc: Parses the config file into a map<string, stirng>.
+*/
 map<string, string> ConfigParser(string file_path)
 {
 	map<string, string> config_values;

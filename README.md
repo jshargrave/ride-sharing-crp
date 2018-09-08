@@ -35,6 +35,16 @@ The following is a list of the required variables to be present.
 Required Variables:
 TomTomAPI=Value
 
+---------------------------- Processing Data ----------------------------------
+Link for reference: https://github.com/Project-OSRM/osrm-backend/wiki/Running-OSRM
+
+In order to run the simulation, first a road network must be downloaded then processed.
+Download a map from http://download.geofabrik.de, then run the following commands.  The commands are used for the MLD (Multi-Level Dijkstra) configuration which improves performance in the event where continuous traffic updates are nesscary to represent the road network.
+1) osrm-extract -p <path to car.lua> data.osm.pbf
+2) osrm-partition data.osrm
+3) osrm-customize data.osrm
+
+
 ------------------------- Unit Testing -------------------------------------------
 Included in the UnitTest folder are a number of tests that can be used to debug and test portions of the program.  The following is a list of instructions for running the unit tests.
 1) cd UnitTest

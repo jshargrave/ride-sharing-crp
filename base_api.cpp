@@ -1,6 +1,16 @@
 using namespace std;
 
 
+BaseAPI::BaseAPI()
+{
+
+}
+
+BaseAPI::~BaseAPI()
+{
+	
+}
+
 string BaseAPI::http_get(string url){
 	CURL *curl;
 	string readBuffer;

@@ -1,6 +1,16 @@
 using namespace std;
 using json = nlohmann::json;
 
+TomTomAPI::TomTomAPI(string key)
+{
+	set_key(key);
+}
+
+TomTomAPI::~TomTomAPI()
+{
+
+}
+
 string TomTomAPI::retrieve_incidents()
 {
 	string str = "<apiKey>";
