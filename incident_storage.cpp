@@ -10,50 +10,37 @@ IncidentStorage::~IncidentStorage()
 
 }
 
-void IncidentStorage::StoreIncidents(list<list<Incident> >& all_inc)
+void IncidentStorage::clear()
 {
-    // Looping through all api's (most likely just one)
-    for(auto it = all_inc.begin(); it != all_inc.end(); it++)
-    {
-        // Looping through all incidents
-        for(auto it2 = (*it).begin(); it2 != (*it).end(); it2++)
-        {
-            // Calling a function to store the incident in a json file
-            StoreAIncident(*it2);
-        }
-    }
+    remove_file(INCIDENTS);
+    remove_file(ACTIVE_INCIDENTS);
+    remove_file(UNACTIVE_INCIDENTS);
 }
 
-void IncidentStorage::StoreAIncident(Incident& inc)
+void IncidentStorage::StoreIncidents(list<list<Incident> >& api_list)
 {
-    // Get Incidents data
-    json j = GetJsonIncidents();
+    // Get current incidents data
+    json j;
+    GetJsonIncidents(j);
 
-    // Add new incident to json
-    j[inc.GetID()] = ParseIncident(inc);
+    // Adding all the incidents from all api's to json variable
+    IncidentsToJson(j, api_list);
 
     // Write json to file
     WriteJsonIncidents(j);
 }
 
-void IncidentStorage::MakeActive(string id)
+void IncidentStorage::StoreAIncident(Incident& inc)
 {
-    // Need to define function
-}
+    // Get Incidents data
+    json j;
+    GetJsonIncidents(j);
 
-void IncidentStorage::StoreAActiveIncident(string id)
-{
-    // Need to define function
-}
+    // Add new incident to json
+    IncidentsToJson(j, inc);
 
-void IncidentStorage::MakeUnactive(string id)
-{
-    // Need to define function
-}
-
-void IncidentStorage::StoreAUnactiveIncident(string id)
-{
-    // Need to define function
+    // Write json to file
+    WriteJsonIncidents(j);
 }
 
 json IncidentStorage::ParseIncident(Incident& inc)
@@ -73,61 +60,89 @@ json IncidentStorage::ParseIncident(Incident& inc)
 }
 
 // ------------------------------- Write json File Functions -----------------
-void IncidentStorage::WriteJson(json j, string file)
+void IncidentStorage::IncidentsToJson(json &j, list<list<Incident> >& api_list)
+{
+    for(auto it = api_list.begin(); it != api_list.end(); it++)
+    {
+        // Calling function to store the list of incidents in a json file
+        IncidentsToJson(j, *it);
+    }
+}
+
+void IncidentStorage::IncidentsToJson(json &j, list<Incident>& inc_list)
+{
+    for(auto it = inc_list.begin(); it != inc_list.end(); it++)
+    {
+        // Calling a function to store the incident in a json file
+        IncidentsToJson(j, *it);
+    }
+}
+
+void IncidentStorage::IncidentsToJson(json &j, Incident& inc)
+{
+    // Parses and stores the incident into a json file
+    j[inc.GetID()] = ParseIncident(inc);
+}
+
+void IncidentStorage::IncidentsToJson(json &j, string id)
+{
+    // Adds the incident id to a json file
+    j[id] = id;
+}
+
+
+void IncidentStorage::WriteJson(json &j, string file)
 {
     // Write incidents to INCIDENTS
     ofstream output(file);
     output << setw(4) << j << endl;
 }
 
-void IncidentStorage::WriteJsonIncidents(json j)
+void IncidentStorage::WriteJsonIncidents(json &j)
 {
     WriteJson(j, INCIDENTS);
 }
 
-void IncidentStorage::WriteJsonActiveIncidents(json j)
+void IncidentStorage::WriteJsonActiveIncidents(json &j)
 {
     WriteJson(j, ACTIVE_INCIDENTS);
 }
 
-void IncidentStorage::WriteJsonUnactiveIncidents(json j)
+void IncidentStorage::WriteJsonUnactiveIncidents(json &j)
 {
     WriteJson(j, UNACTIVE_INCIDENTS);
 }
 
-// -------------------------- Get json Function --------------------------
-json IncidentStorage::GetJson(string file)
+// -------------------------- json Function --------------------------
+void IncidentStorage::GetJson(json &j, string file)
 {
-    json j;
     // Check if INCIDENTS file exist
     if(DoesFileExist(file))
     {
-        // File does exist
         // Parse all information into a json object
         ifstream input(file);
         input >> j;
         input.close();
     }
-    return j;
 }
 
-json IncidentStorage::GetJsonIncidents()
+void IncidentStorage::GetJsonIncidents(json &j)
 {
-    return GetJson(INCIDENTS);
+    GetJson(j, INCIDENTS);
 }
 
-json IncidentStorage::GetJsonActiveIncidents()
+void IncidentStorage::GetJsonActiveIncidents(json &j)
 {
-    return GetJson(ACTIVE_INCIDENTS);
+    GetJson(j, ACTIVE_INCIDENTS);
 }
 
-json IncidentStorage::GetJsonUnactiveIncidents()
+void IncidentStorage::GetJsonUnactiveIncidents(json &j)
 {
-    return GetJson(UNACTIVE_INCIDENTS);
+    GetJson(j, UNACTIVE_INCIDENTS);
 }
 
 // ---------------------------- Does Id Exist Functions ------------------
-bool IncidentStorage::DoesIdExist(json j, string id)
+bool IncidentStorage::DoesIdExist(json &j, string id)
 {
     j.at(id);
     return true;
@@ -135,20 +150,26 @@ bool IncidentStorage::DoesIdExist(json j, string id)
 
 bool IncidentStorage::DoesIncidentIdExist(string id)
 {
-    return DoesIdExist(GetJsonIncidents(), id);
+    json j;
+    GetJsonIncidents(j);
+    return DoesIdExist(j, id);
 }
 
 bool IncidentStorage::DoesActiveIncidentIdExist(string id)
 {
-    return DoesIdExist(GetJsonActiveIncidents(), id);
+    json j;
+    GetJsonActiveIncidents(j);
+    return DoesIdExist(j, id);
 }
 
 bool IncidentStorage::DoesUnactiveIncidentIdExist(string id)
 {
-    return DoesIdExist(GetJsonUnactiveIncidents(), id);
+    json j;
+    GetJsonUnactiveIncidents(j);
+    return DoesIdExist(j, id);
 }
 
-// ----------------------------- Does File Exist Functions ------------------
+// ----------------------------- File Functions ------------------
 bool IncidentStorage::DoesFileExist(string file_path)
 {
     ifstream input_file(file_path);
@@ -177,4 +198,24 @@ bool IncidentStorage::DoesActiveIncidentFileExist()
 bool IncidentStorage::DoesUnactiveIncidentFileExist()
 {
     return DoesFileExist(UNACTIVE_INCIDENTS);
+}
+
+void IncidentStorage::remove_file(string file)
+{
+    // File does not exist
+    if (!DoesFileExist(file))
+    {
+        cout<<"Does not exist: "<<file<<endl;
+    }
+    // Failed to remove
+    else if (remove(file.c_str()) != 0)
+    {
+        cout<<"Remove Failed: "<<file<<endl;
+
+    }
+    // Removed sucessfully
+    else
+    {
+        cout<<"Removed: "<<file<<endl;
+    }
 }

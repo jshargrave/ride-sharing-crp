@@ -5,6 +5,7 @@
 #include "json.hpp"
 #include <fstream>
 #include <iostream>
+#include <cstdio>
 using namespace std;
 
 #ifndef incident_storage_H
@@ -34,7 +35,15 @@ class IncidentStorage
 		/*
 		Desc: Used to add the incdents passed to the storage file INCIDENTS.
 		*/
-		void StoreIncidents(list<list<Incident> >& all_inc);
+		void StoreIncidents(list<list<Incident> >& api_list);
+
+	private:
+
+		/*
+		Desc: This function deletes all files that were generated.  Normally
+			  this function is never called.
+		*/
+		void clear();
 
 		/*
 		Desc: This function takes one single incident as a paramater and
@@ -43,59 +52,14 @@ class IncidentStorage
 		void StoreAIncident(Incident& inc);
 
 		/*
-		Desc: Takes the id passed and makes the incident matching that id in
-			  the INCIDENTS file active by adding it to the ACTIVE_INCIDENTS
-			  file.
+		Desc:
 		*/
-		void MakeActive(string id);
+		void StoreActiveIncidents();
 
 		/*
 		Desc:
 		*/
-		void StoreAActiveIncident(string id);
-
-		/*
-		Desc: Takes the id passed and makes the incident matching that id
-			  in the ACTIVE_INCIDENTS file unactive by removing it from the
-			  ACTIVE_INCIDENTS file and adding it to the UNACTIVE_INCIDENTS.
-		*/
-		void MakeUnactive(string id);
-
-		/*
-		Desc:
-		*/
-		void StoreAUnactiveIncident(string id);
-
-	private:
-
-		void WriteJson(json j, string file);
-		void WriteJsonIncidents(json j);
-		void WriteJsonActiveIncidents(json j);
-		void WriteJsonUnactiveIncidents(json j);
-
-		json GetJson(string file);
-		json GetJsonIncidents();
-		json GetJsonActiveIncidents();
-		json GetJsonUnactiveIncidents();
-
-		/*
-
-		*/
-		bool DoesIdExist(json j, string id);
-		bool DoesIncidentIdExist(string id);
-		bool DoesActiveIncidentIdExist(string id);
-		bool DoesUnactiveIncidentIdExist(string id);
-
-
-		/*
-		Desc: This function determines if a file exists by passing a file path
-			  as a string and attempting to open that file, and checking the
-			  stream status.
-		*/
-		bool DoesFileExist(string file_path);
-		bool DoesIncidentFileExist();
-		bool DoesActiveIncidentFileExist();
-		bool DoesUnactiveIncidentFileExist();
+		void StoreUnactiveIncidents();
 
 		/*
 		Desc: Function that is responsible for parsing the incident data into a
@@ -105,6 +69,52 @@ class IncidentStorage
 		*/
 		json ParseIncident(Incident& inc);
 
+		/*
+		Desc: Overloaded functions to convert a incident into a json variable.
+			  The functions can handle several different cases.  A list of api's
+			  that each contain a list of incidents, A list of incidents, a
+			  single incident passed, or a incident's id passed as a string.
+			  Each overloaded function also takes a json variable passed by
+			  reference which stores the newly generated json data.
+		*/
+		void IncidentsToJson(json &j, list<list<Incident> >& api_list);
+		void IncidentsToJson(json &j, list<Incident>& inc_list);
+		void IncidentsToJson(json &j, Incident& inc);
+		void IncidentsToJson(json &j, string id);
+
+		/*
+		Desc: Functions used to write json data to files.
+		*/
+		void WriteJson(json &j, string file);
+		void WriteJsonIncidents(json &j);
+		void WriteJsonActiveIncidents(json &j);
+		void WriteJsonUnactiveIncidents(json &j);
+
+		/*
+		Desc: Functions used to fetch json data from files.
+		*/
+		void GetJson(json &j, string file);
+		void GetJsonIncidents(json &j);
+		void GetJsonActiveIncidents(json &j);
+		void GetJsonUnactiveIncidents(json &j);
+
+		/*
+		Desc: Functions used to check if a incidents id exist.
+		*/
+		bool DoesIdExist(json &j, string id);
+		bool DoesIncidentIdExist(string id);
+		bool DoesActiveIncidentIdExist(string id);
+		bool DoesUnactiveIncidentIdExist(string id);
+
+
+		/*
+		Desc: Functions used to check if a file exist.
+		*/
+		bool DoesFileExist(string file_path);
+		bool DoesIncidentFileExist();
+		bool DoesActiveIncidentFileExist();
+		bool DoesUnactiveIncidentFileExist();
+		void remove_file(string file);
 
 }; // IncidentStorage
 
